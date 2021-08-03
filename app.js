@@ -5,11 +5,10 @@ mongoose=require("mongoose"),
 bodyparser=require("body-parser");
 expressSanitizer=require("express-sanitizer"),
 
-// mongoose.connect("mongodb://localhost:27017/restful_blog_app",
-//                 {useNewUrlParser: true,
-//                 useUnifiedTopology: true});
-mongoose.connect("mongodb+srv://rakshitsharmaa:Oxl1ool1or1o@@cluster0.wnv6s.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",{useNewUrlParser: true,
-                 useUnifiedTopology: true});
+mongoose.connect("mongodb://localhost:27017/restful_blog_app",
+                {useNewUrlParser: true,
+                useUnifiedTopology: true});
+
 app.set('view engine', 'ejs');
 app.use(express.static("public"));
 app.use(bodyparser.urlencoded({extended:true}));
@@ -90,6 +89,6 @@ app.delete('/blogs/:id', (req, res) => {
         res.redirect("/blogs");
     })
 });
-app.listen(process.env.PORT,function(){
+app.listen(process.env.PORT||3000,function(){
     console.log("server is running");
 })
