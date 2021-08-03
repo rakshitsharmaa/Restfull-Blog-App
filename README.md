@@ -7,5 +7,6 @@
 To Host this project run
 
 ```bash
-  https://hidden-gorge-94079.herokuapp.com/
+  <a href="https://hidden-gorge-94079.herokuapp.com/" target = "_blank" >**Blog App**</a>
+  
 ```
