@@ -5,4 +5,4 @@
 ## Deployment :
 
 
-  <a href="https://hidden-gorge-94079.herokuapp.com/" target = "_blank" >**Blog App**</a>
+  <a href="https://enigmatic-sierra-36718.herokuapp.com/blogs" target = "_blank" >**Blog App**</a>
