@@ -14,7 +14,7 @@ router.get('/blogs/:id/edit', isLoggedIn,(req, res) => {
     })
 });
 
-router.put('/blogs/:id', (req, res) => {
+router.put('/blogs/:id',isLoggedIn, (req, res) => {
     req.body.blog.body=req.sanitize(req.body.blog.body);
     Blog.findByIdAndUpdate(req.params.id,req.body.blog,function(err,updatedBlog){
         if(err){

@@ -1,4 +1,3 @@
-
 var express=require("express"),
 app=express(),
 methodOverride=require("method-override"),
@@ -47,13 +46,6 @@ app.use(view);
 app.use(edit);
 app.use(register);
 app.use(deletes);
-
-
-
-
-
-
-
 app.listen(process.env.PORT||3000,function(){
     console.log("server is running");
 })

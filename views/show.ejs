@@ -5,7 +5,9 @@
     <div class="ui top attached">
     <div class="item">
         <img class="ui centered rounded image" src="<%=blog.image %>">
-
+        <p>
+           <em>This blog is created by:<%=blog.author.username%></em> 
+        </p>
         <div class="content">
             <span> <% blog.created.toDateString() %> </span>
         </div>
