@@ -1,6 +1,4 @@
 
-
-
 var express=require("express"),
 app=express(),
 methodOverride=require("method-override"),
@@ -32,12 +30,16 @@ app.use(passport.session());
 passport.use(new localstrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
+app.use(function(req,res,next){
+    res.locals.currentUser=req.user
+    next();
+})
 // Blog.create({
 //     title:"New Blog",
 //     image:"https://static.toiimg.com/photo/53209691.cms",
 //     body:"it is a fantastic blog"
 // })
-app.get('/blogs', (req, res) => {
+app.get('/blogs',isLoggedIn, (req, res) => {
     
     Blog.find({},function(err,blogs){
         if(err){
@@ -47,12 +49,12 @@ app.get('/blogs', (req, res) => {
         }
     });
 });
-app.get('/', (req, res) => {
+app.get('/',isLoggedIn, (req, res) => {
     
     res.redirect("/blogs");
 });
 
-app.get('/blogs/new', (req, res) => {
+app.get('/blogs/new',isLoggedIn, (req, res) => {
     res.render("new");
 });
 app.post('/blogs', (req, res) => {
@@ -65,7 +67,7 @@ app.post('/blogs', (req, res) => {
         }
     })
 });
-app.get("/blogs/:id", (req, res) => {
+app.get("/blogs/:id", isLoggedIn,(req, res) => {
    Blog.findById(req.params.id,(err,foundBlog)=>{
         if(err){
             res.redirect("/blog");
@@ -74,7 +76,7 @@ app.get("/blogs/:id", (req, res) => {
         }
    })
 });
-app.get('/blogs/:id/edit', (req, res) => {
+app.get('/blogs/:id/edit', isLoggedIn,(req, res) => {
     Blog.findById(req.params.id,(err,findblog)=>{
         if(err){
             res.redirect("/blogs");
@@ -99,7 +101,7 @@ app.delete('/blogs/:id', (req, res) => {
     })
 });
 
-
+//registeration routs
 app.get('/register', (req, res) => {
     res.render("register");
 });
@@ -117,6 +119,29 @@ app.post('/register', (req, res) => {
         }
     });
 });
+// login routs
+app.get('/login', (req, res) => {
+    res.render("login");
+});
+app.post('/login',passport.authenticate("local",{successRedirect:"/blogs",failureRedirect: "/login"}), (req, res) => {
+  
+});
+
+
+//logout routs
+app.get('/logout', (req, res) => {
+    req.logout();
+    res.redirect("/login");
+});
+
+function isLoggedIn(req,res,next){
+    if(req.isAuthenticated()){
+        return next();
+    }
+     res.redirect("/login");
+}
+
+
 app.listen(process.env.PORT||3000,function(){
     console.log("server is running");
 })

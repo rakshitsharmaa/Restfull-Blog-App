@@ -2,14 +2,22 @@
 <head>
     <title>Blog App</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="/stylesheets/app.css">
 </head>
 <body>
     <div class="ui fixed inverted menu">
         <div class="ui container">
-            <div class="header item"><i class="code icon"></i>Blog Iten</div>
+            <div class="header item"><i class="code icon"></i>Blog Item</div>
             <a href="/" class="item">Home</a>
-            <a href="/blogs/new" class="item">New post</a>
+                <a href="/blogs/new" class="item">New post</a>
+                <% if(!currentUser){%>
+                    <a href="/login" class="item"</a>login</a>
+                    <a href="/register" class="item"</a>sign up</a>
+               <% }else{ %>
+                <a href="#" class="item">logged in as  <%=currentUser.username%></a>
+                <a href="/logout" class="item"</a>logout</a>
+                <%}%>               
         </div>
       
     </div>
