@@ -1,11 +1,18 @@
+
+
+
 var express=require("express"),
 app=express(),
 methodOverride=require("method-override"),
 mongoose=require("mongoose"),
 bodyparser=require("body-parser");
+localstrategy=require("passport-local");
+passport = require("passport");
 expressSanitizer=require("express-sanitizer"),
+Blog=require("./models/Blog"),
+User=require("./models/User");
 
-mongoose.connect("mongodb://localhost:27017/restful_blog_app",
+mongoose.connect("mongodb://localhost:27017/restful_blog_ap",
                 {useNewUrlParser: true,
                 useUnifiedTopology: true});
 
@@ -15,14 +22,16 @@ app.use(bodyparser.urlencoded({extended:true}));
 app.use(methodOverride("_method"));
 app.use(expressSanitizer());
 
-var blogSchema=new mongoose.Schema({
-    title: String,
-    image: String,
-    body: String,
-    created: {type: Date, default: Date.now}
-});
-
-var Blog=mongoose.model("Blog",blogSchema);
+app.use(require("express-session")({
+    secret:"stiev is fool",
+    resave:false,
+    saveUninitialized:false
+}));
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new localstrategy(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
 // Blog.create({
 //     title:"New Blog",
 //     image:"https://static.toiimg.com/photo/53209691.cms",
@@ -88,6 +97,25 @@ app.delete('/blogs/:id', (req, res) => {
     Blog.findByIdAndRemove(req.params.id,function(err){
         res.redirect("/blogs");
     })
+});
+
+
+app.get('/register', (req, res) => {
+    res.render("register");
+});
+app.post('/register', (req, res) => {
+    var newUser= new User({username:req.body.username});
+    User.register(newUser,req.body.password,function(err,user){
+        if(err){
+            console.log("err");
+            return res.render("register");
+
+        }else{
+            passport.authenticate("local")(req,res,function(){
+                res.redirect("/blogs");
+            });
+        }
+    });
 });
 app.listen(process.env.PORT||3000,function(){
     console.log("server is running");
