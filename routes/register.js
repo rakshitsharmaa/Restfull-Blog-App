@@ -1,0 +1,28 @@
+
+
+
+var express=require("express"),
+router=express.Router();
+var User=require("../models/User");
+var passport=require("passport");
+
+//registeration routs
+router.get('/register', (req, res) => {
+    res.render("register");
+});
+router.post('/register', (req, res) => {
+    var newUser= new User({username:req.body.username});
+    User.register(newUser,req.body.password,function(err,user){
+        if(err){
+            console.log("err");
+            return res.render("register");
+
+        }else{
+            passport.authenticate("local")(req,res,function(){
+                res.redirect("/blogs");
+            });
+        }
+    });
+});
+
+module.exports=router;

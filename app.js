@@ -9,6 +9,12 @@ passport = require("passport");
 expressSanitizer=require("express-sanitizer"),
 Blog=require("./models/Blog"),
 User=require("./models/User");
+Blog=require("./routes/blog");
+LogIn=require("./routes/login");
+edit=require("./routes/edit");
+view=require("./routes/view");
+register=require("./routes/register");
+deletes=require("./routes/delete");
 
 mongoose.connect("mongodb://localhost:27017/restful_blog_ap",
                 {useNewUrlParser: true,
@@ -34,112 +40,18 @@ app.use(function(req,res,next){
     res.locals.currentUser=req.user
     next();
 })
-// Blog.create({
-//     title:"New Blog",
-//     image:"https://static.toiimg.com/photo/53209691.cms",
-//     body:"it is a fantastic blog"
-// })
-app.get('/blogs',isLoggedIn, (req, res) => {
-    
-    Blog.find({},function(err,blogs){
-        if(err){
-            console.log("error");
-        }else{
-            res.render("index",{blogs:blogs});
-        }
-    });
-});
-app.get('/',isLoggedIn, (req, res) => {
-    
-    res.redirect("/blogs");
-});
 
-app.get('/blogs/new',isLoggedIn, (req, res) => {
-    res.render("new");
-});
-app.post('/blogs', (req, res) => {
-    req.body.blog.body=req.sanitize(req.body.blog.body);
-    Blog.create(req.body.blog,function(err,newBlog){
-        if(err){
-            res.render("new");
-        }else{
-            res.redirect("/blogs");
-        }
-    })
-});
-app.get("/blogs/:id", isLoggedIn,(req, res) => {
-   Blog.findById(req.params.id,(err,foundBlog)=>{
-        if(err){
-            res.redirect("/blog");
-        }else{
-            res.render("show",{blog:foundBlog});
-        }
-   })
-});
-app.get('/blogs/:id/edit', isLoggedIn,(req, res) => {
-    Blog.findById(req.params.id,(err,findblog)=>{
-        if(err){
-            res.redirect("/blogs");
-        }else{
-            res.render("edit",{blog:findblog});
-        }
-    })
-});
-app.put('/blogs/:id', (req, res) => {
-    req.body.blog.body=req.sanitize(req.body.blog.body);
-    Blog.findByIdAndUpdate(req.params.id,req.body.blog,function(err,updatedBlog){
-        if(err){
-            res.redirect("/blogs");
-        }else{
-            res.redirect("/blogs/"+req.params.id);
-        }
-    })
-});
-app.delete('/blogs/:id', (req, res) => {
-    Blog.findByIdAndRemove(req.params.id,function(err){
-        res.redirect("/blogs");
-    })
-});
-
-//registeration routs
-app.get('/register', (req, res) => {
-    res.render("register");
-});
-app.post('/register', (req, res) => {
-    var newUser= new User({username:req.body.username});
-    User.register(newUser,req.body.password,function(err,user){
-        if(err){
-            console.log("err");
-            return res.render("register");
-
-        }else{
-            passport.authenticate("local")(req,res,function(){
-                res.redirect("/blogs");
-            });
-        }
-    });
-});
-// login routs
-app.get('/login', (req, res) => {
-    res.render("login");
-});
-app.post('/login',passport.authenticate("local",{successRedirect:"/blogs",failureRedirect: "/login"}), (req, res) => {
-  
-});
+app.use(Blog);
+app.use(LogIn);
+app.use(view);
+app.use(edit);
+app.use(register);
+app.use(deletes);
 
 
-//logout routs
-app.get('/logout', (req, res) => {
-    req.logout();
-    res.redirect("/login");
-});
 
-function isLoggedIn(req,res,next){
-    if(req.isAuthenticated()){
-        return next();
-    }
-     res.redirect("/login");
-}
+
+
 
 
 app.listen(process.env.PORT||3000,function(){
