@@ -14,10 +14,12 @@
         <div class="description">
             <p> <%- blog.body %> </p>
         </div>
+        <%if(currentUser && blog.author.id.equals(currentUser._id)){%>
         <a href="/blogs/<%=blog._id%>/edit" class="ui orange basic button">Edit</a>
         <form action="/blogs/<%=blog._id%>?_method=DELETE" method="POST"  id="delete">
             <button class="ui red basic button">Deleate</button>
         </form>
+        <%}%>
     </div> 
 
     </div>

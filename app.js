@@ -15,7 +15,7 @@ view=require("./routes/view");
 register=require("./routes/register");
 deletes=require("./routes/delete");
 
-mongoose.connect("mongodb://localhost:27017/restful_blog_ap",
+mongoose.connect("mongodb://localhost:27017/restful_blog_p",
                 {useNewUrlParser: true,
                 useUnifiedTopology: true});
 

@@ -4,14 +4,10 @@ var express=require("express"),
 router=express.Router();
 var Blog = require("../models/Blog");
 
-router.get('/blogs/:id/edit', isLoggedIn,(req, res) => {
-    Blog.findById(req.params.id,(err,findblog)=>{
-        if(err){
-            res.redirect("/blogs");
-        }else{
-            res.render("edit",{blog:findblog});
-        }
-    })
+router.get('/blogs/:id/edit',checkBlogOwnership,(req, res) => {
+        Blog.findById(req.params.id,(err,findblog)=>{
+        res.render("edit",{blog:findblog});
+    });    
 });
 
 router.put('/blogs/:id',isLoggedIn, (req, res) => {
@@ -31,4 +27,23 @@ function isLoggedIn(req,res,next){
      res.redirect("/login");
 }
 
+function checkBlogOwnership(req,res,next){
+    var p=req;
+    
+    if(req.isAuthenticated()){
+        Blog.findById(req.params.id,(err,findblog)=>{
+            if(err){
+                res.redirect("back");
+            }else{
+                if(findblog.author.id.equals(p.user._id)){
+                    next();
+                }else{
+                    res.redirect("back");
+                }
+            }
+        });
+    }else{
+        res.redirect("back");
+    }
+}
 module.exports=router;
