@@ -1,6 +1,7 @@
 var express=require("express"),
 router=express.Router();
 var Blog = require("../models/Blog");
+var middleware= require("../middleware");
 
 
 router.get('/blogs', (req, res) => {
@@ -18,10 +19,10 @@ router.get('/', (req, res) => {
     res.redirect("/blogs");
 });
 
-router.get('/blogs/new',isLoggedIn, (req, res) => {
+router.get('/blogs/new',middleware.isLoggedIn, (req, res) => {
     res.render("new");
 });
-router.post('/blogs',isLoggedIn ,(req, res) => {
+router.post('/blogs',middleware.isLoggedIn ,(req, res) => {
    
     req.body.blog.body=req.sanitize(req.body.blog.body);
     var author={
@@ -44,10 +45,4 @@ router.get('/logout', (req, res) => {
     req.logout();
     res.redirect("/login");
 });
-function isLoggedIn(req,res,next){
-    if(req.isAuthenticated()){
-        return next();
-    }
-     res.redirect("/login");
-}
 module.exports=router;
