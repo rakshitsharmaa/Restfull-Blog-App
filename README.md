@@ -5,4 +5,4 @@
 ## Deployment :
 
 
-  <a href="https://enigmatic-sierra-36718.herokuapp.com/blogs" target = "_blank" >**Blog App**</a>
+  <a href="https://infinite-temple-96969.herokuapp.com/" >**Blog App**</a>
