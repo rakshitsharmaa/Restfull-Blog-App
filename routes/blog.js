@@ -16,7 +16,7 @@ router.get('/blogs', (req, res) => {
 });
 router.get('/', (req, res) => {
     
-    res.redirect("/blogs");
+    res.render("landing");
 });
 
 router.get('/blogs/new',middleware.isLoggedIn, (req, res) => {
