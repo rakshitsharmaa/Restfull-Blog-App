@@ -6,16 +6,16 @@
             <% blogs.forEach(function(blog){ %>
                 <div class="item">
                     <div class="image"> <img src="<%=blog.image %>" ></div>
-                    <div class="content">  <a class="header" href="/blogs/<%= blog._id%>"><%= blog.title %></a> 
+                    <div class="content">  <a class="header" href="/blogs/<%= blog._id%>"><strong> <h3><i><%= blog.title %></i></h3></strong></a> 
                         <div class="meta">
                             <span><%= blog.created.toDateString() %></span>
                           </div>
                           <div class="description">
-                               <p><%- blog.body.substring(0,100)%>...</p>
+                               <h5><%- blog.body.substring(0,100)%>...</h5>
                           </div>
                            
                             <div class="extra">
-                                <a class="ui floated basic voilet" href="/blogs/<%= blog._id%>">read more <i class="right chevron icon"></i></a>
+                                <a class="ui floated basic voilet" href="/blogs/<%= blog._id%>"><h5><i>read more</i></h5></a>
                      </div>
                     </div>
                 </div>
@@ -23,7 +23,4 @@
         </div>
     </div>
 </div>
-
-
-
 <%- include('./partials/footer') %>
