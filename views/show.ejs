@@ -6,13 +6,13 @@
     <div class="item">
         <img class="ui centered rounded image" src="<%=blog.image %>">
         <p>
-           <em>This blog is created by:<%=blog.author.username%></em> 
+           <em>This blog is created by: <strong><%=blog.author.username%></strong></em> 
         </p>
         <div class="content">
             <span> <% blog.created.toDateString() %> </span>
         </div>
         <div class="description">
-            <p> <%- blog.body %> </p>
+            <h5> <%- blog.body %> </h5>
         </div>
         <%if(currentUser && blog.author.id.equals(currentUser._id)){%>
         <a href="/blogs/<%=blog._id%>/edit" class="ui orange basic button">Edit</a>

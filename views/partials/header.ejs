@@ -9,13 +9,13 @@
 </head>
 <body>
     <div class="ui fixed inverted menu">
-        <div class="ui container">
-            <div class="header item"><i class="code icon"></i>Blog Item</div>
-            <a href="/" class="item">Home</a>
-                <a href="/blogs/new" class="item">New post</a>
+        <div class=" ui container">
+            <div class="header item"><i class="code icon"></i><h4>Blog Item</h4></div>
+            <a href="/" class="item"><h4>Home</h4></a>
+                <a href="/blogs/new" class="item"><h4>New post</h4></a>
                 <% if(!currentUser){%>
-                    <a href="/login" class="item"</a>login</a>
-                    <a href="/register" class="item"</a>sign up</a>
+                    <a href="/login" class="item"</a> <h4>login</h4></a>
+                    <a href="/register" class="item"</a><h4>sign up</h4></a>
                <% }else{ %>
                 <a href="#" class="item">logged in as  <%=currentUser.username%></a>
                 <a href="/logout" class="item"</a>logout</a>
