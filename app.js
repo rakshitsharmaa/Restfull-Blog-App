@@ -5,6 +5,7 @@ mongoose=require("mongoose"),
 bodyparser=require("body-parser");
 localstrategy=require("passport-local");
 passport = require("passport");
+flash   = require("connect-flash");
 expressSanitizer=require("express-sanitizer"),
 Blog=require("./models/Blog"),
 User=require("./models/User");
@@ -35,11 +36,13 @@ app.use(passport.session());
 passport.use(new localstrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
+app.use(flash());
 app.use(function(req,res,next){
-    res.locals.currentUser=req.user
+    res.locals.currentUser=req.user;
+    res.locals.success=req.flash("success");
+    res.locals.error=req.flash("error");
     next();
 })
-
 app.use(Blog);
 app.use(LogIn);
 app.use(view);

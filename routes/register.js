@@ -11,14 +11,17 @@ router.get('/register', (req, res) => {
     res.render("register");
 });
 router.post('/register', (req, res) => {
+    var i=req;
     var newUser= new User({username:req.body.username});
     User.register(newUser,req.body.password,function(err,user){
         if(err){
             console.log("err");
-            return res.render("register");
+            i.flash("error",err.message)
+            return res.redirect("/register");
 
         }else{
             passport.authenticate("local")(req,res,function(){
+                i.flash("success","registed successfully "+user.username);
                 res.redirect("/blogs");
             });
         }

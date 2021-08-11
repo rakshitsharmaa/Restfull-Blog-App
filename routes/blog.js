@@ -42,7 +42,9 @@ router.post('/blogs',middleware.isLoggedIn ,(req, res) => {
     })
 });
 router.get('/logout', (req, res) => {
+    var i= req;
     req.logout();
+    i.flash("success","logged out successfully"); 
     res.redirect("/login");
 });
 module.exports=router;
